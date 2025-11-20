@@ -1,0 +1,32 @@
+npx esbuild src/transformers/gemini3Fix.ts \
+  --bundle \
+  --platform=node \
+  --format=cjs \
+  --outfile=dist/transformers/gemini3Fix.js
+
+npm run build
+
+{
+  "LOG": true,
+  "API_TIMEOUT_MS": 600000,
+  "transformers": [
+    {
+      "path": "/path/to/claude-code-router/dist/transformers/gemini3Fix.js",
+      "options": {}
+    }
+  ],
+  "Providers": [
+    {
+      "name": "openrouter",
+      "api_base_url": "https://openrouter.ai/api/v1/chat/completions",
+      "api_key": "sk-or-v1-xxxxx",
+      "models": ["google/gemini-3-pro-preview"],
+      "transformer": {
+        "use": ["openrouter", "gemini3-fix"]
+      }
+    }
+  ],
+  "Router": {
+    "default": "openrouter,google/gemini-3-pro-preview"
+  }
+}
